@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="WaveguideProject.Client/WaveguideProject.Client.csproj" />
+  <Project Path="WaveguideProject.Coordinator/WaveguideProject.Coordinator.csproj" />
+  <Project Path="WaveguideProject.Shared/WaveguideProject.Shared.csproj" />
+  <Project Path="WaveguideProject.Worker/WaveguideProject.Worker.csproj" />
+</Solution>
