@@ -20,6 +20,7 @@ namespace WaveguideProject.Client
             {
                 txtResult.Text = "Подключение к серверу-координатору и отправка задачи...\n";
                 BtnCalculate.IsEnabled = false; // Блокируем кнопку от двойного нажатия
+                LoadingIndicator.Visibility = Visibility.Visible; // Включаем анимацию загрузки
 
                 // 1. Собираем данные из интерфейса
                 var parameters = new WaveguideParameters(
@@ -56,13 +57,20 @@ namespace WaveguideProject.Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Произошла ошибка: {ex.Message}");
-                txtResult.Text = "Сбой сети или неверные данные.";
+                txtResult.Text += $"\n[ОШИБКА] Сбой сети или неверные данные.\nДетали: {ex.Message}";
+                MessageBox.Show($"Произошла ошибка при выполнении расчета: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
-                BtnCalculate.IsEnabled = true; // Разблокируем кнопку
+                // Возвращаем интерфейс в исходное состояние
+                BtnCalculate.IsEnabled = true;
+                LoadingIndicator.Visibility = Visibility.Hidden;
             }
+        }
+
+        private void txtGrid_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+
         }
     }
 }

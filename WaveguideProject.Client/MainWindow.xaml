@@ -1,25 +1,76 @@
 ﻿<Window x:Class="WaveguideProject.Client.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Расчет волноводов (Монте-Карло)" Height="450" Width="400">
-    <StackPanel Margin="20">
-        <TextBlock Text="Параметры волновода:" FontWeight="Bold" Margin="0,0,0,10"/>
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Waveguide Analysis Dashboard" Height="650" Width="900"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        WindowStartupLocation="CenterScreen">
 
-        <TextBlock Text="Ширина (a):"/>
-        <TextBox x:Name="txtWidth" Text="10.0" Margin="0,0,0,5"/>
+    <Grid Margin="-221,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Высота (b):"/>
-        <TextBox x:Name="txtHeight" Text="5.0" Margin="0,0,0,5"/>
+        <!-- Основная рабочая область -->
+        <Grid Grid.Column="1" Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <TextBlock Text="Разрешение сетки (nx):"/>
-        <TextBox x:Name="txtGrid" Text="20" Margin="0,0,0,5"/>
+            <TextBlock Text="Настройка Монте-Карло симуляции" FontSize="26" FontWeight="Bold" Margin="0,0,0,25"/>
 
-        <TextBlock Text="Блужданий на узел (точность):"/>
-        <TextBox x:Name="txtWalkers" Text="500" Margin="0,0,0,15"/>
+            <!-- Карточка с настройками -->
+            <materialDesign:Card Grid.Row="1" Padding="30" VerticalAlignment="Top" materialDesign:ElevationAssist.Elevation="Dp3">
+                <StackPanel>
+                    <TextBlock Text="Входные параметры волновода" FontSize="20" FontWeight="Medium" Margin="0,0,0,15"/>
+                    
+                    <!-- Поля ввода с привязкой к именам из C# -->
+                    <TextBox x:Name="txtWidth" materialDesign:HintAssist.Hint="Ширина волновода (a)" 
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,0,15" FontSize="16" Text=""/>
 
-        <Button x:Name="BtnCalculate" Content="Рассчитать конфигурацию" Click="BtnCalculate_Click" Padding="10"/>
+                    <TextBox x:Name="txtHeight" materialDesign:HintAssist.Hint="Высота волновода (b)" 
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,0,15" FontSize="16" Text=""/>
 
-        <TextBlock Text="Результат вычислений:" FontWeight="Bold" Margin="0,15,0,5"/>
-        <TextBox x:Name="txtResult" Height="120" TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
-    </StackPanel>
+                    <TextBox x:Name="txtGrid" materialDesign:HintAssist.Hint="Разрешение сетки" 
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,0,15" FontSize="16" Text="" TextChanged="txtGrid_TextChanged"/>
+
+                    <TextBox x:Name="txtWalkers" materialDesign:HintAssist.Hint="Количество лучей (Walkers)" 
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,0,25" FontSize="16" Text=""/>
+
+                    <!-- Панель управления запуском -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Кнопка запуска -->
+                        <Button Grid.Column="0" x:Name="BtnCalculate" Click="BtnCalculate_Click"
+                                Style="{StaticResource MaterialDesignRaisedButton}" 
+                                Content="ЗАПУСТИТЬ РАСЧЕТ" Width="180" Height="40" />
+
+                        <!-- Индикатор загрузки сети -->
+                        <ProgressBar Grid.Column="1" x:Name="LoadingIndicator"
+                                     Style="{StaticResource MaterialDesignCircularProgressBar}" 
+                                     Value="0" IsIndeterminate="True" 
+                                     Margin="20,0,0,0" HorizontalAlignment="Left" Visibility="Hidden"/>
+                    </Grid>
+
+                    <!-- Окно вывода результатов -->
+                    <TextBox x:Name="txtResult" 
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             materialDesign:HintAssist.Hint="Журнал сети и результаты"
+                             Height="110" Margin="0,20,0,0"
+                             IsReadOnly="True" TextWrapping="Wrap" 
+                             VerticalScrollBarVisibility="Auto" FontFamily="Consolas"/>
+                </StackPanel>
+            </materialDesign:Card>
+        </Grid>
+    </Grid>
 </Window>
